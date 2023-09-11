@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../pages/sign-in.css";
 
-const Login = ({ onInfoTooltip }) => {
+const Login = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,8 +15,7 @@ const Login = ({ onInfoTooltip }) => {
 
   function onSubmit(e) {
     e.preventDefault();
-    console.log("OK");
-    onInfoTooltip();
+    onLogin({ email, password });
   }
 
   return (

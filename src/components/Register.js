@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "../pages/sign-up.css";
+import { Link } from "react-router-dom";
 
-const Register = ({ onInfoTooltip }) => {
+const Register = ({ onRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,8 +16,7 @@ const Register = ({ onInfoTooltip }) => {
 
   function onSubmit(e) {
     e.preventDefault();
-    onInfoTooltip();
-    console.log("OK");
+    onRegister({ email, password });
   }
 
   return (
@@ -57,9 +57,9 @@ const Register = ({ onInfoTooltip }) => {
       </form>
       <p className='registration__text'>
         Уже зарегистрированы?{" "}
-        <a className='registration__link' href='/sign-in'>
+        <Link to='signin' className='registration__link'>
           Войти
-        </a>
+        </Link>
       </p>
     </div>
   );
