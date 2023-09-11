@@ -1,0 +1,6 @@
+.gallery-item__like {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 74px;
+}

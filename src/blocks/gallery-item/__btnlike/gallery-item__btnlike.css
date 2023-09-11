@@ -1,0 +1,24 @@
+.gallery-item__btnlike {
+  cursor: pointer;
+  background: url(../../../images/like.svg);
+  background-repeat: no-repeat;
+  width: 22px;
+  height: 19px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  transition: opacity 1s ease-out;
+}
+
+.gallery-item__btnlike:hover {
+  opacity: 0.5;
+}
+
+@media screen and (max-width: 315px) {
+  .gallery-item__btnlike {
+    width: 30px;
+  }
+}

@@ -1,0 +1,15 @@
+.popup-form__send_inactive {
+  opacity: 0.2;
+  background-color: transparent;
+  color: #000;
+  border: 1px solid #000000;
+  cursor: auto;
+}
+
+.popup-form__send_inactive:hover {
+  opacity: 0.2;
+  background-color: transparent;
+  color: #000;
+  border: 1px solid #000000;
+  cursor: auto;
+}

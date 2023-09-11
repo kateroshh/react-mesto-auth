@@ -1,0 +1,17 @@
+.registration__input {
+    width: 100%;
+    padding: 0 0 8px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #CCC;
+    margin-bottom: 30px;
+    color: #FFF;
+}
+
+.registration__input:nth-last-child(2) {
+    margin-bottom: 216px;
+}
+
+.registration__input::placeholder {
+    color: #CCC;
+}

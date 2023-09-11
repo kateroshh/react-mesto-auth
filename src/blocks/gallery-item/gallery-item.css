@@ -1,0 +1,17 @@
+.gallery-item {
+  margin: 0;
+  padding: 0;
+  min-height: 361px;
+  background-color: #fff;
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 315px) {
+  .gallery-item {
+      min-height: 40px;
+  }
+}

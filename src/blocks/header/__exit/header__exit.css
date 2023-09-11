@@ -1,0 +1,17 @@
+.header__exit {
+    padding: 0 0 0 24px;
+    color: #A9A9A9;
+    text-decoration: none;
+}
+
+.header__exit:hover {
+    opacity: 0.6;
+    color: #FFF;
+}
+
+@media screen and (max-width: 440px) {
+    .header__exit {
+        padding: 18px 0 0 0;
+        margin-bottom: 39px;
+    }
+  }

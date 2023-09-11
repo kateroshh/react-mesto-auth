@@ -1,0 +1,25 @@
+.profile-info__avatar-hover {
+  background-image: url(../../../images/edit_avatar.svg);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  min-width: 26px;
+  min-height: 26px;
+  position: absolute;
+  top: 46px;
+  left: 46px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .2s ease-in;
+}
+
+@media screen and (max-width: 700px) {
+  .profile-info__avatar-hover {
+    left: 110px;
+  }
+}
+
+@media screen and (max-width: 315px) {
+  .profile-info__avatar-hover {
+    left: 80px;
+  }
+}

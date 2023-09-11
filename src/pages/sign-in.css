@@ -1,0 +1,8 @@
+@import url(../vendor/normalize.css);
+
+@import url(../vendor/fonts/inter.css);
+
+@import url(../blocks/login/login.css);
+@import url(../blocks/login/__input/login__input.css);
+@import url(../blocks/login/__send/login__send.css);
+@import url(../blocks/login/__title/login__title.css);

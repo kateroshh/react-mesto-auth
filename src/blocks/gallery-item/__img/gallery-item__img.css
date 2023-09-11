@@ -1,0 +1,13 @@
+.gallery-item__img {
+  max-height: 282px;
+  height: 282px;
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  object-fit: cover;
+  cursor: pointer;
+  transition: opacity 0.5s ease-out;
+}
+
+.gallery-item__img:hover {
+  opacity: 0.8;
+}

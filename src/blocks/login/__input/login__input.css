@@ -1,0 +1,17 @@
+.login__input {
+    width: 100%;
+    padding: 0 0 8px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #CCC;
+    margin-bottom: 30px;
+    color: #FFF;
+}
+
+.login__input:nth-last-child(2) {
+    margin-bottom: 216px;
+}
+
+.login__input::placeholder {
+    color: #CCC;
+}

@@ -1,0 +1,19 @@
+.login {
+    max-width: 358px;
+    width: 100%;
+    margin: 0 auto;
+    color: #FFF;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 60px;
+}
+
+@media screen and (max-width: 380px) {
+    .login {
+      padding: 0 30px 0px 30px;
+      max-width: 260px;
+    }
+  }
+  
