@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Card({ card, onCardClick, onPhotoClick, onCardLike, onCardDelete }) {
-  //Количество лайков
+  //Количество лайков. Пишем проверку иначе выводит ошибку если кол-во лайков пусто
   const likesCount = card.likes.length ? card.likes.length : 0;
 
   const handleCardClick = () => {
@@ -14,7 +14,6 @@ function Card({ card, onCardClick, onPhotoClick, onCardLike, onCardDelete }) {
   };
 
   const handleCardLike = () => {
-    //onCardLike(card.likes, card._id);
     onCardLike(card);
   };
 
@@ -33,7 +32,7 @@ function Card({ card, onCardClick, onPhotoClick, onCardLike, onCardDelete }) {
 
   // Создаём переменную, которую после зададим в `className` для кнопки лайка
   const cardLikeButtonClassName = `gallery-item__btnlike ${
-    isLiked && "gallery-item__btnlike_active"
+    isLiked ? "gallery-item__btnlike_active" : ""
   }`;
 
   return (

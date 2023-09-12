@@ -14,19 +14,20 @@ import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import * as auth from "../utils/auth";
 import * as token from "../utils/token";
+import SuccessIcon from "../images/success_icon.svg";
+import FailIcon from "../images/fail_icon.svg";
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
-  const [isPhotoPopupOnen, setPhotoPopupOpen] = useState(false);
-  const [isInfoTooltipTrue, setInfoTooltipTrue] = useState(false);
-  const [isInfoTooltipFalse, setInfoTooltipFalse] = useState(false);
+  const [isPhotoPopupOpen, setPhotoPopupOpen] = useState(false);
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const [isSuccessTooltipStatus, setIsSuccessTooltipStatus] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
-  const localLoggedIn = JSON.parse(localStorage.getItem("loggedIn"));
-  const [loggedIn, setLoggedIn] = useState(localLoggedIn);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState({});
 
   const navigate = useNavigate();
@@ -35,18 +36,20 @@ function App() {
     const jwt = token.getToken();
 
     if (jwt) {
-      auth.getContent(jwt).then((res) => {
-        if (res.status === 401) {
-          setLoggedIn(false);
-          localStorage.setItem("loggedIn", JSON.stringify(false));
-        }
-        if (res) {
-          setLoggedIn(true);
-          localStorage.setItem("loggedIn", JSON.stringify(true));
-          setUserData({ email: res.data.email, password: res.data.password });
-        }
-        return res;
-      });
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          if (res.status === 401) {
+            setLoggedIn(false);
+          } else {
+            setLoggedIn(true);
+            setUserData({ email: res.data.email, password: res.data.password });
+          }
+          return res;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, []);
 
@@ -57,18 +60,20 @@ function App() {
   }, [loggedIn]);
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([userData, cardData]) => {
-        setCurrentUser(userData);
-        setCards(cardData);
-      })
-      .catch((err) => {
-        console.log(
-          "Ошибка получения данных пользователя и первоначального списка карточек",
-          err
-        );
-      });
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([userData, cardData]) => {
+          setCurrentUser(userData);
+          setCards(cardData);
+        })
+        .catch((err) => {
+          console.log(
+            "Ошибка получения данных пользователя и первоначального списка карточек",
+            err
+          );
+        });
+    }
+  }, [loggedIn]);
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
@@ -114,13 +119,17 @@ function App() {
     setAddPlacePopupOpen(true);
   }
 
+  function handleTooltipOpen(isSuccess) {
+    setIsTooltipOpen(true);
+    setIsSuccessTooltipStatus(isSuccess);
+  }
+
   function closeAllPopups() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setPhotoPopupOpen(false);
-    setInfoTooltipTrue(false);
-    setInfoTooltipFalse(false);
+    setIsTooltipOpen(false);
   }
 
   function handleUpdateUser(user) {
@@ -139,7 +148,6 @@ function App() {
     api
       .saveUserAvatar(avatar)
       .then((newUserInfo) => {
-        //setCurrentUser({ ...currentUser, avatar });
         setCurrentUser(newUserInfo);
         closeAllPopups();
       })
@@ -164,12 +172,10 @@ function App() {
     auth
       .authorize(email, password)
       .then((res) => {
-        if (!res || res.statusCode === 400) {
-          setInfoTooltipFalse(true);
-        }
-        if (res) {
+        if (!res || res.statusCode === 401 || !res?.token) {
+          handleTooltipOpen(false);
+        } else {
           setLoggedIn(true);
-          localStorage.setItem("loggedIn", JSON.stringify(true));
           setUserData({ email, password });
           token.setToken(res.token);
           navigate("/");
@@ -177,20 +183,26 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-        setInfoTooltipFalse(true);
+        handleTooltipOpen(false);
       });
   }
 
   function handleRegister({ email, password }) {
-    auth.register(email, password).then((res) => {
-      if (!res || res.statusCode === 400) {
-        setInfoTooltipFalse(true);
-      } else {
-        setInfoTooltipTrue(true);
-        navigate("/signin", { replace: true });
-        return res;
-      }
-    });
+    auth
+      .register(email, password)
+      .then((res) => {
+        if (!res || res.statusCode === 400 || res?.error) {
+          handleTooltipOpen(false);
+        } else {
+          handleTooltipOpen(true);
+          navigate("/signin", { replace: true });
+          return res;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        handleTooltipOpen(false);
+      });
   }
 
   return (
@@ -251,32 +263,20 @@ function App() {
 
         <ImagePopup
           card={selectedCard}
-          // {...selectedCard}
-          isOpen={isPhotoPopupOnen}
+          isOpen={isPhotoPopupOpen}
           onClose={closeAllPopups}
         />
 
         <InfoTooltip
-          title={"Вы успешно зарегистрировались!"}
-          isSuccess={true}
-          isOpen={isInfoTooltipTrue}
+          title={
+            isSuccessTooltipStatus
+              ? "Вы успешно зарегистрировались!"
+              : "Что-то пошло не так! Попробуйте ещё раз."
+          }
+          icon={isSuccessTooltipStatus ? SuccessIcon : FailIcon}
+          isOpen={isTooltipOpen}
           onClose={closeAllPopups}
         />
-
-        <InfoTooltip
-          title={"Что-то пошло не так! Попробуйте ещё раз."}
-          isSuccess={false}
-          isOpen={isInfoTooltipFalse}
-          onClose={closeAllPopups}
-        />
-
-        {/* <PopupWithForm
-          name='delete'
-          title='Вы уверены?'
-          isOpen={isDeletePopupOpen}
-          onClose={closeAllPopups}
-          buttonText='Да'
-        ></PopupWithForm> */}
       </div>
     </CurrentUserContext.Provider>
   );

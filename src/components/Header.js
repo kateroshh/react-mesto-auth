@@ -6,72 +6,69 @@ import { Route, Routes, Link } from "react-router-dom";
 import * as token from "../utils/token";
 
 function Header({ userData }) {
-  const [isMenu, setIsMenu] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   function handleClickMenu() {
-    document
-      .querySelector(".header__text")
-      .classList.toggle("header__menu_active");
-
-    setIsMenu(!isMenu);
+    setIsMenuOpen(!isMenuOpen);
   }
 
   function handleRemoveToken() {
     token.removeToken();
-    localStorage.setItem("loggedIn", JSON.stringify(false));
   }
 
   return (
-    <>
-      <header className='header'>
-        <Routes>
-          <Route
-            path='signup'
-            element={
-              <Link to='/signin' className='header__link'>
-                Войти
-              </Link>
-            }
-          />
-          <Route
-            path='signin'
-            element={
-              <Link to='/signup' className='header__link'>
-                Регистрация
-              </Link>
-            }
-          />
-          <Route
-            path='/'
-            element={
-              <>
-                <p className='header__text'>
-                  {userData?.email || ""}
-                  <Link
-                    to='/signin'
-                    className='header__exit'
-                    onClick={handleRemoveToken}
-                  >
-                    Выйти
-                  </Link>
-                </p>
-              </>
-            }
-          />
-        </Routes>
+    <header className='header'>
+      <Routes>
+        <Route
+          path='signup'
+          element={
+            <Link to='/signin' className='header__link'>
+              Войти
+            </Link>
+          }
+        />
+        <Route
+          path='signin'
+          element={
+            <Link to='/signup' className='header__link'>
+              Регистрация
+            </Link>
+          }
+        />
+        <Route
+          path='/'
+          element={
+            <>
+              <p
+                className={`header__text ${
+                  isMenuOpen ? "header__menu_active" : ""
+                }`}
+              >
+                {userData?.email || ""}
+                <Link
+                  to='/signin'
+                  className='header__exit'
+                  onClick={handleRemoveToken}
+                >
+                  Выйти
+                </Link>
+              </p>
+            </>
+          }
+        />
+      </Routes>
 
-        <div className='header__main'>
-          <img className='header__logo' src={logo} alt='Логотип' />
+      <div className='header__main'>
+        <img className='header__logo' src={logo} alt='Логотип' />
 
-          <img
-            className='header__menu'
-            src={isMenu ? menu : closeIcon}
-            alt='Меню'
-            onClick={handleClickMenu}
-          />
-        </div>
-      </header>
-    </>
+        <img
+          className='header__menu'
+          src={isMenuOpen ? closeIcon : menu}
+          alt='Меню'
+          onClick={handleClickMenu}
+        />
+      </div>
+    </header>
   );
 }
 
