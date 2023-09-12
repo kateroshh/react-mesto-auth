@@ -1,15 +1,8 @@
-import SuccessIcon from "../images/success_icon.svg";
-import FailIcon from "../images/fail_icon.svg";
-
-function InfoTooltip({ name, title, isSuccess, isOpen, onClose }) {
+function InfoTooltip({ title, icon, isOpen, onClose }) {
   return (
     <div className={`popup ${isOpen ? "popup_opened" : ""}`}>
       <div className='popup__container popup-infotooltip'>
-        <img
-          className='popup-infotooltip__img'
-          src={isSuccess ? SuccessIcon : FailIcon}
-          alt='Успех'
-        />
+        <img className='popup-infotooltip__img' src={icon} alt='Успех' />
         <h3 className='popup-infotooltip__text'>{title}</h3>
         <button
           className={`popup__close`}

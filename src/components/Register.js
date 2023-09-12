@@ -57,7 +57,7 @@ const Register = ({ onRegister }) => {
       </form>
       <p className='registration__text'>
         Уже зарегистрированы?{" "}
-        <Link to='signin' className='registration__link'>
+        <Link to='/signin' className='registration__link'>
           Войти
         </Link>
       </p>
