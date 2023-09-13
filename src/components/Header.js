@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Route, Routes, Link } from "react-router-dom";
 import * as token from "../utils/token";
 
-function Header({ userData }) {
+function Header({ userData, onExit }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   function handleClickMenu() {
@@ -14,6 +14,7 @@ function Header({ userData }) {
 
   function handleRemoveToken() {
     token.removeToken();
+    onExit();
   }
 
   return (

@@ -39,12 +39,8 @@ function App() {
       auth
         .checkToken(jwt)
         .then((res) => {
-          if (res.status === 401) {
-            setLoggedIn(false);
-          } else {
-            setLoggedIn(true);
-            setUserData({ email: res.data.email, password: res.data.password });
-          }
+          setLoggedIn(true);
+          setUserData({ email: res.data.email, password: res.data.password });
           return res;
         })
         .catch((err) => {
@@ -205,6 +201,10 @@ function App() {
       });
   }
 
+  function handleExitClick() {
+    setLoggedIn(false);
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='page'>
@@ -216,7 +216,7 @@ function App() {
           <Route
             path='/'
             userData={userData}
-            element={<Layout userData={userData} />}
+            element={<Layout userData={userData} onExit={handleExitClick} />}
           >
             <Route
               index
